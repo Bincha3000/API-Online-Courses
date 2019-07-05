@@ -3,25 +3,38 @@ from rest_framework.response import Response
 from rest_framework import status
 from users.serializers import UserSerializer
 from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
-class UserCreate(APIView):
+# from users.serializers import UserSerializer
+# from rest_framework import generics
+# from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+# from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
+
+
+class UserCreateView(APIView):
 
     def post(self, request, format='json'):
-            serializer = UserSerializer(data=request.data)
-            if serializer.is_valid():
-                user = serializer.save()
-                if user:
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                token = Token.objects.create(user=user)
+                json = serializer.data
+                json['token'] = token.key
+                return Response(json, status=status.HTTP_201_CREATED)
 
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class UserLogInView(ObtainAuthToken):
 
+    permission_classes = (AllowAny,)
 
-
-{
-"username": "passsw",
-"password": "123sdff",
-"email": "bincha.1997@gmail.com",
-"first_name": "vasya",
-"last_name": "pridurok"
-}
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})

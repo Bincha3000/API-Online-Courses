@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Category(models.Model):
 
@@ -30,7 +30,8 @@ class Course(models.Model):
     price = models.DecimalField(verbose_name="Price", max_digits=8, decimal_places=2)
     date_start = models.DateField(verbose_name="Date start", auto_now=False, auto_now_add=False)
     date_end = models.DateField(verbose_name="Date end", auto_now=False, auto_now_add=False)
-    teacher = models.ManyToManyField("Teacher", verbose_name="Teacher", related_name="teacher")
+    teacher = models.ManyToManyField("Teacher", verbose_name="Teacher", related_name="teacher", blank=True)
+    student = models.ManyToManyField(User, verbose_name="User", related_name='user', blank=True)
 
     class Meta:
         ordering = ["date_start"]

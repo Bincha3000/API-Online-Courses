@@ -26,7 +26,7 @@ SECRET_KEY = '(8lyyfroni(x)nt!j*s$_n=5@lhxlll^(c@#azo^tnlz04aeqe'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = ['192.168.0.104']
 
 
 # Application definition
@@ -40,20 +40,34 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'rest_framework',
+    'rest_framework.authtoken',
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
+    'corsheaders',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated', )
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = ['http://192.168.0.102:3001',]
 
 ROOT_URLCONF = 'api_courses.urls'
 
@@ -118,6 +132,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)
