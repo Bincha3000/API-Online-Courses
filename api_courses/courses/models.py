@@ -3,17 +3,17 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
 
-    name = models.CharField(verbose_name="Name", max_length=50)
+    title = models.CharField(verbose_name="Title", max_length=50)
     slug = models.SlugField(verbose_name="Slug", max_length=200, db_index=True, unique=True, default=None)
     description = models.CharField(verbose_name='Description', max_length=250)
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["title"]
         verbose_name = "Category"
         verbose_name_plural = "Categorys"
 
     def __str__(self):
-        return self.name
+        return self.title
 
     def get_absolute_url(self):
         return reverse("Category_detail", kwargs={"pk": self.pk})
@@ -22,7 +22,7 @@ class Category(models.Model):
 
 class Course(models.Model):
 
-    name = models.CharField(verbose_name="Name", max_length=50)
+    title = models.CharField(verbose_name="Title", max_length=50)
     slug = models.SlugField(max_length=200, db_index=True, unique=True, default=None)
     category = models.ForeignKey(Category, verbose_name="Category", related_name="category", on_delete=models.CASCADE)
     short_description = models.CharField(verbose_name="Short description", max_length=250)
@@ -39,7 +39,7 @@ class Course(models.Model):
         verbose_name_plural = "Courses"
 
     def __str__(self):
-        return self.name
+        return self.title
 
     def get_absolute_url(self):
         return reverse("Course_detail", kwargs={"pk": self.pk})
@@ -47,8 +47,8 @@ class Course(models.Model):
 
 class Lesson(models.Model):
 
-    name = models.CharField(verbose_name="Name", max_length=50)
-    course = models.ForeignKey(Course, verbose_name="Course", related_name="course", on_delete=models.CASCADE)
+    title = models.CharField(verbose_name="Title", max_length=50)
+    course = models.ForeignKey(Course, verbose_name="Course", related_name="lessons", on_delete=models.CASCADE)
     description = models.CharField(verbose_name="Description", max_length=50)
     duration = models.PositiveSmallIntegerField("Duration")
     date = models.DateTimeField("Date", auto_now=False, auto_now_add=False)
@@ -61,7 +61,7 @@ class Lesson(models.Model):
         verbose_name_plural = "Lessons"
 
     def __str__(self):
-        return self.name
+        return self.title
 
     def get_absolute_url(self):
         return reverse("Lesson_detail", kwargs={"pk": self.pk})
@@ -79,7 +79,7 @@ class Teacher(models.Model):
         verbose_name_plural = "Teachers"
 
     def __str__(self):
-        return self.name
+        return self.first_name
 
     def get_absolute_url(self):
         return reverse("Teacher_detail", kwargs={"pk": self.pk})

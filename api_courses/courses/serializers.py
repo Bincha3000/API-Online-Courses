@@ -1,38 +1,47 @@
-from rest_framework.serializers import ModelSerializer
-from courses.models import Course, Teacher, Lesson
+from rest_framework import serializers
+from courses.models import Course, Teacher, Lesson, Category
 
 
-class LessonSerializer(ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = ('id', 'title', 'description')
+
+
+class LessonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
         fields = ('id', 'title', 'description', 'date', 'homework', 'course')
 
 
-class CourseSerializer(ModelSerializer):
-    lessons = serializers.StringRelatedField(many=True)
-    teachers = serializers.StringRelatedField(many=True)
-
-    class Meta:
-        model = Course
-        fields = ('id', 'title', 'description', 'price', 'date_start', 'duration', 'teachers', 'lessons')
-
-
-class TeacherSerializer(ModelSerializer):
+class TeacherSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teacher
-        fields = ('id', 'first_name', 'last_name', 'about')
+        fields = ('id', 'first_name', 'last_name', 'info')
 
 
-class CourseSignupSerializer(ModelSerializer):
+class CourseSerializer(serializers.ModelSerializer):
+    lessons = serializers.StringRelatedField(many=True)
+    teacher = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Course
-        fields = ('id', 'title', 'students')
-        extra_kwargs = {'students': {'write_only': True}}
+        fields = ('id', 'title', 'short_description', 'long_description', 'price', 'date_start', 'date_end', 'teacher', 'lessons')
 
-    def update(self, instance, validated_data):
-        user = self.context['request'].user
-        if user not in instance.students.all():
-            instance.students.add(user)
-        return instance
+
+
+
+# class CourseSignupSerializer(ModelSerializer):
+#     class Meta:
+#         model = Course
+#         fields = ('id', 'title', 'students')
+#         extra_kwargs = {'students': {'write_only': True}}
+
+#     def update(self, instance, validated_data):
+#         user = self.context['request'].user
+#         if user not in instance.students.all():
+#             instance.students.add(user)
+#         return instance
