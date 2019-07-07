@@ -26,7 +26,7 @@ SECRET_KEY = '(8lyyfroni(x)nt!j*s$_n=5@lhxlll^(c@#azo^tnlz04aeqe'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-INTERNAL_IPS = ['192.168.0.104']
+INTERNAL_IPS = ['127.0.0.1']
 
 
 # Application definition
@@ -38,12 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'debug_toolbar',
     'rest_framework',
     'rest_framework.authtoken',
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
-    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -67,7 +67,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ORIGIN_WHITELIST = ['http://192.168.0.102:3001',]
+
 
 ROOT_URLCONF = 'api_courses.urls'
 
@@ -139,3 +139,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# LOGIN_URL = 'api/v1/users/login'
+# LOGIN_REDIRECT_URL = 'api/v1/courses'

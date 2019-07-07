@@ -13,7 +13,7 @@ class LessonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-        fields = ('id', 'title', 'description', 'date', 'homework', 'course')
+        fields = ('id', 'title', 'description', 'course', 'date', 'duration', 'homework', 'finished')
 
 
 class TeacherSerializer(serializers.ModelSerializer):
@@ -24,24 +24,11 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    lessons = serializers.StringRelatedField(many=True)
-    teacher = serializers.StringRelatedField(many=True)
+
+    category = CategorySerializer()
+    lessons = LessonSerializer(many=True)
+    teacher = TeacherSerializer(many=True)
 
     class Meta:
         model = Course
-        fields = ('id', 'title', 'short_description', 'long_description', 'price', 'date_start', 'date_end', 'teacher', 'lessons')
-
-
-
-
-# class CourseSignupSerializer(ModelSerializer):
-#     class Meta:
-#         model = Course
-#         fields = ('id', 'title', 'students')
-#         extra_kwargs = {'students': {'write_only': True}}
-
-#     def update(self, instance, validated_data):
-#         user = self.context['request'].user
-#         if user not in instance.students.all():
-#             instance.students.add(user)
-#         return instance
+        fields = ('id', 'category', 'title', 'short_description', 'long_description', 'price', 'date_start', 'date_end', 'teacher', 'lessons')

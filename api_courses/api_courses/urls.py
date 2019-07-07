@@ -22,6 +22,7 @@ urlpatterns = [
     path('api/v1/courses/', include('courses.urls')),
     path('api/v1/users/', include('users.urls')),
 ]
+
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [

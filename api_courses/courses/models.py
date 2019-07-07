@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import reverse
+
 
 class Category(models.Model):
 
@@ -17,7 +19,6 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         return reverse("Category_detail", kwargs={"pk": self.pk})
-
 
 
 class Course(models.Model):
@@ -50,10 +51,10 @@ class Lesson(models.Model):
     title = models.CharField(verbose_name="Title", max_length=50)
     course = models.ForeignKey(Course, verbose_name="Course", related_name="lessons", on_delete=models.CASCADE)
     description = models.CharField(verbose_name="Description", max_length=50)
-    duration = models.PositiveSmallIntegerField("Duration")
     date = models.DateTimeField("Date", auto_now=False, auto_now_add=False)
+    duration = models.PositiveSmallIntegerField("Duration")
+    homework = models.TextField(verbose_name="Home work")
     finished = models.BooleanField(verbose_name="Finished", default=False)
-
 
     class Meta:
         ordering = ["date"]
