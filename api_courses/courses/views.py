@@ -5,12 +5,12 @@ from rest_framework import permissions
 
 from courses.models import Course, Category, Teacher
 from courses.serializers import CourseSerializer, CategorySerializer, TeacherSerializer
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class AllCoursesView(LoginRequiredMixin, APIView):
+class AllCoursesView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.AllowAny, )
 
     def get(self, request):
         courses = Course.objects.all()
@@ -21,6 +21,7 @@ class AllCoursesView(LoginRequiredMixin, APIView):
 class OneCourseView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.AllowAny, )
 
     def get(self, request, pk):
         course = get_object_or_404(Course, pk=pk)
@@ -31,6 +32,7 @@ class OneCourseView(APIView):
 class CategoriesView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.AllowAny, )
 
     def get(self, request):
         categories = Category.objects.all()
@@ -41,6 +43,7 @@ class CategoriesView(APIView):
 class TeachersView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.AllowAny, )
 
     def get(self, request):
         teachers = Teacher.objects.all()

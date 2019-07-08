@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.conf import reverse
+from django.urls import reverse
 
 
 class Category(models.Model):
