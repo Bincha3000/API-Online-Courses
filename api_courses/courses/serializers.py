@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from courses.models import Course, Teacher, Lesson, Category
+from django.contrib.auth.models import User
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -32,3 +33,10 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ('id', 'category', 'title', 'short_description', 'long_description', 'price', 'date_start', 'date_end', 'teacher', 'lessons')
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'first_name', 'last_name')

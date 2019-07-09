@@ -2,9 +2,10 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
-
+from rest_framework import status
 from courses.models import Course, Category, Teacher
-from courses.serializers import CourseSerializer, CategorySerializer, TeacherSerializer
+from django.contrib.auth.models import User
+from courses.serializers import CourseSerializer, CategorySerializer, TeacherSerializer, UserSerializer
 
 
 class AllCoursesView(APIView):
@@ -49,3 +50,13 @@ class TeachersView(APIView):
         teachers = Teacher.objects.all()
         serializer = TeacherSerializer(teachers, many=True)
         return Response(serializer.data)
+
+
+class PersonalArea(APIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        user = User.objects.get(username=request.user)
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
