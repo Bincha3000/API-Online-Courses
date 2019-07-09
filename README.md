@@ -8,11 +8,11 @@ OTUS Home Work 7
 + [Полезные ссылки](#полезные-ссылки)
 + [Requirements](#requirements)
 + [Сборка и запуск проекта](#сборка-и-запуск)
-+ [Примеры](#примеры-ответа-от-сервера-на-запрос-курса)
++ [Примеры](#примеры-ответа-от-сервера)
   * [Endpoint 1](#endpoint-1)
   * [Endpoint 2](#endpoint-2)
   * [Endpoint 3](#endpoint-3)
-
++ [License](license)
 
 ### Краткое описание:
 Проект представляет собой Django приложение на основе Django-rest-framework – удобного инструмента для работы с rest основанного на идеологии фреймворка Django, что позволяет создать полноценный
@@ -110,3 +110,8 @@ pyhon api_courses/manage.py runserver
     }
 ]
 ```
+
+
+
+### License
+This project is licensed under the terms of the MIT license
