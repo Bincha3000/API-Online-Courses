@@ -12,7 +12,7 @@ OTUS Home Work 7
   * [Endpoint 1](#endpoint-1)
   * [Endpoint 2](#endpoint-2)
   * [Endpoint 3](#endpoint-3)
-+ [License](license)
++ [License](#license)
 
 ### Краткое описание:
 Проект представляет собой Django приложение на основе Django-rest-framework – удобного инструмента для работы с rest основанного на идеологии фреймворка Django, что позволяет создать полноценный
