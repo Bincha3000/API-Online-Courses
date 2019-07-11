@@ -5,18 +5,16 @@ from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
 
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
     username = serializers.CharField(
         max_length=32,
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
-
+    first_name = serializers.CharField(max_length=20)
+    last_name = serializers.CharField(max_length=20)
     email = serializers.EmailField(
         required=True,
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
-
     password = serializers.CharField(min_length=8, write_only=True)
 
     def create(self, validated_data):

@@ -3,9 +3,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework import status
-from courses.models import Course, Category, Teacher
 from django.contrib.auth.models import User
-from courses.serializers import CourseSerializer, CategorySerializer, TeacherSerializer, UserSerializer
+from courses.models import Course, Category, Teacher, Profile
+from courses.serializers import CourseSerializer, CategorySerializer, \
+                                TeacherSerializer, UserSerializer, ProfileSerializer
 
 
 class AllCoursesView(APIView):
@@ -52,11 +53,28 @@ class TeachersView(APIView):
         return Response(serializer.data)
 
 
-class PersonalArea(APIView):
+class ProfileView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
-        user = User.objects.get(username=request.user)
-        serializer = UserSerializer(user)
+        profile = User.objects.get(username=request.user)
+        serializer = UserSerializer(profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        try:
+            profile = User.objects.get(username=request.user)
+            serializer = UserSerializer(profile, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except User.DoesNotExist:
+            serializer = UserSerializer(data=param)
+            if serializer.is_valid():
+                serializer.save(username=request.user)
+                return Response(serializer.data)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
