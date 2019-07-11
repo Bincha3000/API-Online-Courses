@@ -25,17 +25,6 @@ class TeacherSerializer(serializers.ModelSerializer):
         fields = ('id', 'first_name', 'last_name', 'info')
 
 
-class CourseSerializer(serializers.ModelSerializer):
-
-    category = CategorySerializer()
-    lessons = LessonSerializer(many=True)
-    teacher = TeacherSerializer(many=True)
-
-    class Meta:
-        model = Course
-        fields = ('id', 'category', 'title', 'short_description', 'long_description', 'price', 'date_start', 'date_end', 'teacher', 'lessons')
-
-
 class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -46,6 +35,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
 
     profile = ProfileSerializer()
+
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'first_name', 'last_name', 'profile')
@@ -63,7 +53,22 @@ class UserSerializer(serializers.ModelSerializer):
         profile.bio = profile_data.get('bio', profile.bio)
         profile.location = profile_data.get('location', profile.location)
         profile.birth_date = profile_data.get('birth_date', profile.birth_date)
-
         profile.save()
 
         return instance
+
+
+class CourseSerializer(serializers.ModelSerializer):
+
+    category = CategorySerializer()
+    lessons = LessonSerializer(many=True)
+    teacher = TeacherSerializer(many=True)
+    student = UserSerializer(many=True)
+
+    class Meta:
+        model = Course
+        fields = (
+            'id', 'category', 'title', 'short_description',
+            'long_description', 'price', 'date_start', 'date_end',
+            'teacher', 'lessons', 'student'
+    )
