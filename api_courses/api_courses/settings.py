@@ -141,3 +141,13 @@ STATIC_URL = '/static/'
 
 # LOGIN_URL = 'api/v1/users/login'
 # LOGIN_REDIRECT_URL = 'api/v1/courses'
+
+ADMINS = [('Your name', 'test@twix.com')]
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'test@kit-kat.com'
+EMAIL_HOST_PASSWORD = 'NADEZHNYI PAROL'
+DEFAULT_FROM_EMAIL = 'Your name'
+DEFAULT_TO_EMAIL = 'test@sneakers.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
