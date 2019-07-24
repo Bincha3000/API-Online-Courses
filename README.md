@@ -1,4 +1,4 @@
-# API-Online-Courses
+# api-online-courses
 OTUS Home Work 7
 
 ## Базовый бекенд для сайта с курсами на основе DRF
@@ -40,7 +40,7 @@ REST-подход обеспечивает масштабируемость си
 
 ### Сборка и запуск:
 ```
-git clone git@github.com:Bincha3000/API-Online-Courses.git
+git clone git@github.com:Bincha3000/api-online-courses.git
 pip install virtualenv
 python3 -m venv venv
 source venv/bin/activate
