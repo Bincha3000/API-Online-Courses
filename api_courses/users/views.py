@@ -20,7 +20,7 @@ def registration_email(first_name, last_name, email):
     send_mail(
         subject=subject,
         message=message,
-        from_email="bincha.1997@gmail.com",
+        from_email="test@bouty.com",
         recipient_list=[email,],
         fail_silently=False)
 
