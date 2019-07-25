@@ -1,7 +1,7 @@
 from django.urls import path
 
-from courses.views import AllCoursesView, OneCourseView, EnrollmentOnCourseView, \
-                          CategoriesView, TeachersView, ProfileView
+from courses.views import AllCoursesView, OneCourseView, EnrollmentOnCourseView,\
+    CategoriesView, TeachersView, ProfileView
 
 
 app_name = 'courses'

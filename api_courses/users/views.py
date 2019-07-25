@@ -12,19 +12,19 @@ from users.serializers import UserSerializer
 
 def registration_email(first_name, last_name, email):
     subject = "Successful registration"
-    message =   """
-                Dear {first_name} {last_name}!
-                Congratulations on your successful registration!
-                """.format(first_name=first_name,
-                            last_name=last_name)
+    message = """
+            Dear {first_name} {last_name}!
+            Congratulations on your successful registration!
+              """.format(first_name=first_name, last_name=last_name)
     send_mail(
         subject=subject,
         message=message,
         from_email="test@bouty.com",
-        recipient_list=[email,],
+        recipient_list=[email, ],
         fail_silently=False)
 
     return True
+
 
 class UserCreateView(APIView):
 
@@ -33,10 +33,10 @@ class UserCreateView(APIView):
     def post(self, request, format='json'):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
+            user = serializer.save()
             first_name = user.first_name
             last_name = user.last_name
             email = user.email
-            user = serializer.save()
             if user and registration_email(first_name, last_name, email):
                 token = Token.objects.create(user=user)
                 json = serializer.data
@@ -44,7 +44,6 @@ class UserCreateView(APIView):
                 return Response(json, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class UserLogInView(ObtainAuthToken):
@@ -58,6 +57,7 @@ class UserLogInView(ObtainAuthToken):
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
         return Response({'token': token.key}, status=status.HTTP_200_OK)
+
 
 class UserLogOutView(APIView):
 

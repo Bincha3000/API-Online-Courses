@@ -4,9 +4,9 @@ from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework import status
 from django.contrib.auth.models import User
-from courses.models import Course, Category, Teacher, Profile
+from courses.models import Course, Category, Teacher
 from courses.serializers import CourseSerializer, CategorySerializer, \
-                                TeacherSerializer, UserSerializer, ProfileSerializer
+    TeacherSerializer, UserSerializer
 
 
 class AllCoursesView(APIView):

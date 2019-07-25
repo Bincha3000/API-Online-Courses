@@ -71,4 +71,4 @@ class CourseSerializer(serializers.ModelSerializer):
             'id', 'category', 'title', 'short_description',
             'long_description', 'price', 'date_start', 'date_end',
             'teacher', 'lessons', 'student'
-    )
+        )

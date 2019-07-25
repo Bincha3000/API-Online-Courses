@@ -24,5 +24,5 @@ class TeacherAdmin(admin.ModelAdmin):
 
 
 @admin.register(Profile)
-class CourseAdmin(admin.ModelAdmin):
+class ProfileAdmin(admin.ModelAdmin):
     list_display = ["user"]
