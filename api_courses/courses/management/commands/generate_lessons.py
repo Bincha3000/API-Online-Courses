@@ -1,15 +1,11 @@
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
 
 from courses.models import (
     Course,
-    Category,
     Lesson,
-    Teacher
 )
 
 from faker import Faker
-import random
 
 
 class Command(BaseCommand):
@@ -20,7 +16,7 @@ class Command(BaseCommand):
         course = Course.objects.values_list('id', flat=True)
 
         for i in range(5):
-            lesson = Lesson.objects.create(
+            Lesson.objects.create(
                 title=fake.job(),
                 course_id=fake.random.choice(course),
                 description=fake.text(max_nb_chars=50),

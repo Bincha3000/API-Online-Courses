@@ -4,15 +4,14 @@ from django.contrib.auth.models import User
 from courses.models import (
     Course,
     Category,
-    Lesson,
     Teacher
 )
 
 from faker import Faker
 import random
 
-class Command(BaseCommand):
 
+class Command(BaseCommand):
 
     def generate(self, *args, **kwargs):
 
@@ -25,10 +24,10 @@ class Command(BaseCommand):
             course = Course.objects.create(
                 title=fake.job(),
                 slug=fake.job().lower(),
-                category_id= random.choice(categories),
+                category_id=random.choice(categories),
                 short_description=fake.text(max_nb_chars=200),
                 long_description=fake.text(max_nb_chars=500),
-                price=random.random()*10000,
+                price=random.random() * 10000,
                 date_start=fake.date_this_month(before_today=True, after_today=False),
                 date_end=fake.date_this_year(before_today=True, after_today=False),
             )
