@@ -12,6 +12,7 @@ OTUS Home Work 7
   * [Endpoint 1](#endpoint-1)
   * [Endpoint 2](#endpoint-2)
   * [Endpoint 3](#endpoint-3)
++ [Добавленный функционал](#добавленный-функционал)
 + [License](#license)
 
 ### Краткое описание:
@@ -110,6 +111,25 @@ pyhon api_courses/manage.py runserver
     }
 ]
 ```
+
+
+### Добавленный функционал
+
+#### Managment команды:
+```
+python manage.py generate_courses
+```
+> Добавляет 5 новых курсов в базу данных в рандомные категории
+
+```
+python manage.py generate_lessons в базу данных
+```
+> Добавляет 5 новых уроков в базу данных в рандомные курсы
+
+```
+python manage.py generate_users
+```
+> Добавляет 5 новых пользователей в базу данных  
 
 
 
