@@ -1,5 +1,4 @@
-from django.core.mail import send_mail
-
+from courses.tasks import registration_email
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -8,22 +7,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 
 from users.serializers import UserSerializer
-
-
-def registration_email(first_name, last_name, email):
-    subject = "Successful registration"
-    message = """
-            Dear {first_name} {last_name}!
-            Congratulations on your successful registration!
-              """.format(first_name=first_name, last_name=last_name)
-    send_mail(
-        subject=subject,
-        message=message,
-        from_email="test@bouty.com",
-        recipient_list=[email, ],
-        fail_silently=False)
-
-    return True
 
 
 class UserCreateView(APIView):
