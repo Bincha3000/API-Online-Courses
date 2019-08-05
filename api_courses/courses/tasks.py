@@ -26,10 +26,11 @@ def registration_email(first_name, last_name, email):
 def notification_courses_email(lesson):
 
     today = date.today()
+    tomorrow = today + timedelta(1)
 
-    lesons = Lesson.objects.filter(start_date=today).all()
+    lesons = Lesson.objects.filter(date__gte=today, date__lte=tomorrow).all()
 
-    students =
+    students
 
     subject = 'Напоминание о {}'.format(lesson.name)
     message = \

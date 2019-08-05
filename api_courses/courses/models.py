@@ -32,7 +32,7 @@ class Course(models.Model):
     date_start = models.DateField(verbose_name="Date start", auto_now=False, auto_now_add=False)
     date_end = models.DateField(verbose_name="Date end", auto_now=False, auto_now_add=False)
     teacher = models.ManyToManyField("Teacher", verbose_name="Teacher", related_name="teacher", blank=True)
-    student = models.ManyToManyField(User, verbose_name="User", related_name='user', blank=True)
+    student = models.ManyToManyField(User, verbose_name="User", related_name='courses', blank=True)
 
     class Meta:
         ordering = ["date_start"]
