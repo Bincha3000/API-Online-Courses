@@ -28,9 +28,9 @@ def notification_courses_email(lesson):
     today = date.today()
     tomorrow = today + timedelta(1)
 
-    lesons = Lesson.objects.filter(date__gte=today, date__lte=tomorrow).all()
-
-    students
+    lessons = Lesson.objects.filter(date__range=(today, tomorrow)).all()
+    courses = Course.objects.filter(lessons__in=lessons).distinct()
+    students = User.objects.filter(courses__in=courses).all()
 
     subject = 'Напоминание о {}'.format(lesson.name)
     message = \
