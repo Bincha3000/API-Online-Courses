@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
 from django.core.mail import send_mail
+from django.contrib.auth.models import User
 
 from courses.models import Lesson
 
@@ -27,26 +28,27 @@ def notification_courses_email(lesson):
 
     today = date.today()
     tomorrow = today + timedelta(1)
-
+    students = []
     lessons = Lesson.objects.filter(date__range=(today, tomorrow)).all()
-    courses = Course.objects.filter(lessons__in=lessons).distinct()
-    students = User.objects.filter(courses__in=courses).all()
+    for lesson in lessons:
+        students = User.objects.filter(courses=lesson.course).distinct()
+        emails = [student.email for student in students]
 
-    subject = 'Напоминание о {}'.format(lesson.name)
-    message = \
-        """
-    Напоминаем о скором проведении урока по теме "{title}"!
-    Дата и время проведения {date}
-    """.format(title=lesson.title, date=lesson.date)
+        subject = 'Напоминание о занятии по теме "{}"'.format(lesson)
+        message = \
+            """
+        Напоминаем о скором проведении урока по теме "{lesson}"!
+        Дата и время проведения {date}
+        """.format(title=lesson, date=lesson.date)
 
-    send_mail(
-        subject=subject,
-        message=message,
-        from_email="test@bouty.com",
-        recipient_list=[],
-        fail_silently=False
-    )
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email="test@bouty.com",
+            recipient_list=emails,
+            fail_silently=False
+        )
 
-    send_email(email)
+        send_email(email)
 
     return True
