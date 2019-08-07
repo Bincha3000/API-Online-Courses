@@ -28,3 +28,7 @@ if settings.DEBUG:
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+
+urlpatterns += [
+    path('django-rq/', include('django_rq.urls'))
+]

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_rq',
 
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
@@ -135,15 +136,35 @@ USE_L10N = True
 USE_TZ = True
 
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
 
+
 # LOGIN_URL = 'api/v1/users/login'
 # LOGIN_REDIRECT_URL = 'api/v1/courses'
 
+
+# DJANGO_RQ SETTINGS
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'PASSWORD': 'some-password',
+        'DEFAULT_TIMEOUT': 360,
+    },
+    'low': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    }
+}
+
+
+# EMAIL SETTINGS
 ADMINS = [('Your name', 'test@twix.com')]
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
