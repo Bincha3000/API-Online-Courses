@@ -8,11 +8,12 @@ OTUS Home Work 7
 + [Полезные ссылки](#полезные-ссылки)
 + [Requirements](#requirements)
 + [Сборка и запуск проекта](#сборка-и-запуск)
++ [Добавленный функционал](#добавленный-функционал)
+  * [Managment команды](#managment-команды)
 + [Примеры](#примеры-ответа-от-сервера)
   * [Endpoint 1](#endpoint-1)
   * [Endpoint 2](#endpoint-2)
   * [Endpoint 3](#endpoint-3)
-+ [Добавленный функционал](#добавленный-функционал)
 + [License](#license)
 
 ### Краткое описание:
@@ -48,6 +49,26 @@ source venv/bin/activate
 pip install -r requirements.txt
 pyhon api_courses/manage.py runserver
 ```
+
+
+### Добавленный функционал:
+
+#### Managment команды:
+```
+python manage.py generate_courses
+```
+> Добавляет 5 новых курсов в базу данных в рандомные категории
+
+```
+python manage.py generate_lessons в базу данных
+```
+> Добавляет 5 новых уроков в базу данных в рандомные курсы
+
+```
+python manage.py generate_users
+```
+> Добавляет 5 новых пользователей в базу данных  
+
 
 
 ### Примеры ответа от сервера:
@@ -111,25 +132,6 @@ pyhon api_courses/manage.py runserver
     }
 ]
 ```
-
-
-### Добавленный функционал
-
-#### Managment команды:
-```
-python manage.py generate_courses
-```
-> Добавляет 5 новых курсов в базу данных в рандомные категории
-
-```
-python manage.py generate_lessons в базу данных
-```
-> Добавляет 5 новых уроков в базу данных в рандомные курсы
-
-```
-python manage.py generate_users
-```
-> Добавляет 5 новых пользователей в базу данных  
 
 
 
