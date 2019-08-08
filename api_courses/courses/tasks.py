@@ -1,13 +1,14 @@
 from datetime import date, timedelta
-
+from django.conf import settings
 from django_rq import job
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 
+
 from courses.models import Lesson
 
 
-@job('low')
+@job('default')
 def registration_email(first_name, last_name, email):
     subject = "Успешная регистрация"
     message = \
@@ -19,7 +20,7 @@ def registration_email(first_name, last_name, email):
     send_mail(
         subject=subject,
         message=message,
-        from_email="test@bouty.com",
+        from_email=settings.EMAIL_HOST_USER,
         recipient_list=[email, ],
         fail_silently=False)
 
@@ -27,7 +28,7 @@ def registration_email(first_name, last_name, email):
 
 
 @job('default')
-def notification_courses_email(lesson):
+def notification_courses_email():
 
     today = date.today()
     tomorrow = today + timedelta(1)
