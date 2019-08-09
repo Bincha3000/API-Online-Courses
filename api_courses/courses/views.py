@@ -107,7 +107,5 @@ class StartScheduler(APIView):
         job = scheduler.enqueue_at(
             datetime.utcnow(),
             notification_courses_email,
-            repeat=None,
-            interval=30,
         )
         return Response(status=status.HTTP_200_OK)
