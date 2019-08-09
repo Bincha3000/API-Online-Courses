@@ -1,12 +1,19 @@
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework import status
-from django.contrib.auth.models import User
+
+from courses.tasks import notification_courses_email
 from courses.models import Course, Category, Teacher
 from courses.serializers import CourseSerializer, CategorySerializer, \
     TeacherSerializer, UserSerializer
+
+from datetime import datetime
+from courses.tasks import notification_courses_email
+import django_rq
 
 
 class AllCoursesView(APIView):
@@ -80,6 +87,7 @@ class EnrollmentOnCourseView(APIView):
         user = request.user
         pk = request.data.get('pk')
         course = get_object_or_404(Course, pk=pk)
+
         if user not in course.student.all():
             course.student.add(user)
             message = {"Сongratulations! You have successfully signed up for the course"}
@@ -87,3 +95,19 @@ class EnrollmentOnCourseView(APIView):
         else:
             message = {"Looks like you've already been enrolled."}
             return Response(message, status=status.HTTP_304_NOT_MODIFIED)
+
+
+class StartScheduler(APIView):
+
+    permission_classes = (permissions.IsAdminUser,)
+
+    def post(self, request):
+
+        scheduler = django_rq.get_scheduler('default')
+        job = scheduler.enqueue_at(
+            datetime.utcnow(),
+            notification_courses_email,
+            repeat=None,
+            interval=30,
+        )
+        return Response(status=status.HTTP_200_OK)

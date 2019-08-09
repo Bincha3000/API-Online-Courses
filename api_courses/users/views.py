@@ -6,10 +6,9 @@ from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
+from django_rq import enqueue
 
 from users.serializers import UserSerializer
-
-import django_rq
 
 
 class UserCreateView(APIView):
@@ -23,8 +22,7 @@ class UserCreateView(APIView):
             first_name = user.first_name
             last_name = user.last_name
             email = user.email
-            queue = django_rq.get_queue("default")
-            queue.enqueue(registration_email, first_name, last_name, email)
+            enqueue(registration_email, first_name, last_name, email)
             if user:
                 token = Token.objects.create(user=user)
                 json = serializer.data
