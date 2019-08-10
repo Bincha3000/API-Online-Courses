@@ -10,6 +10,7 @@ OTUS Home Work 7
 + [Сборка и запуск проекта](#сборка-и-запуск)
 + [Добавленный функционал](#добавленный-функционал)
   * [Managment команды](#managment-команды)
+  * [Очереди задач](#очереди-задач)
 + [Примеры](#примеры-ответа-от-сервера)
   * [Endpoint 1](#endpoint-1)
   * [Endpoint 2](#endpoint-2)
@@ -69,6 +70,59 @@ python manage.py generate_users
 ```
 > Добавляет 5 новых пользователей в базу данных  
 
+
+### Очереди задач:  
+
+Добавлен функционал отправки электронной почты при регистрации и напоминание о скором начале курса с помощью 
+очередей задач:
+```
+@job('default')
+def registration_email(first_name, last_name, email):
+    subject = "Успешная регистрация"
+    message = \
+        """
+            Дорогой(ая) {first_name} {last_name}!
+            Поздравляю вы успешно зарегестрировались!
+    """.format(first_name=first_name, last_name=last_name)
+
+    send_mail(
+        subject=subject,
+        message=message,
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[email, ],
+        fail_silently=False)
+
+    return True
+
+
+@job('default')
+def notification_courses_email():
+    today = date.today()
+    tomorrow = today + timedelta(1)
+    students = []
+    lessons = Lesson.objects.filter(date__range=(today, tomorrow)).all()
+    for lesson in lessons:
+        students = User.objects.filter(courses=lesson.course).distinct()
+        emails = [student.email for student in students]
+        subject = 'Напоминание о занятии по теме "{title}"'.format(title=lesson)
+
+        message = \
+            """
+        Напоминаем о скором проведении урока по теме "{title}"!
+        Дата и время проведения {date}
+        """.format(title=lesson, date=lesson.date)
+
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=emails,
+            fail_silently=False
+        )
+
+    return True
+
+```
 
 
 ### Примеры ответа от сервера:
