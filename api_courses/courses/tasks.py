@@ -35,10 +35,10 @@ def notification_courses_email():
     for lesson in lessons:
         students = User.objects.filter(courses=lesson.course).distinct()
         emails = [student.email for student in students]
-        subject = 'Напоминание о занятии по теме "{title}"'.format(title=lesson)
 
+        subject = 'Напоминание о занятии по теме "{title}"'.format(title=lesson)
         message = \
-            """
+        """
         Напоминаем о скором проведении урока по теме "{title}"!
         Дата и время проведения {date}
         """.format(title=lesson, date=lesson.date)

@@ -96,16 +96,3 @@ class EnrollmentOnCourseView(APIView):
             message = {"Looks like you've already been enrolled."}
             return Response(message, status=status.HTTP_304_NOT_MODIFIED)
 
-
-class StartScheduler(APIView):
-
-    permission_classes = (permissions.IsAdminUser,)
-
-    def post(self, request):
-
-        scheduler = django_rq.get_scheduler('default')
-        job = scheduler.enqueue_at(
-            datetime.utcnow(),
-            notification_courses_email,
-        )
-        return Response(status=status.HTTP_200_OK)

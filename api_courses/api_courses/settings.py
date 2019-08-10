@@ -153,13 +153,8 @@ RQ_QUEUES = {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
-        'DEFAULT_TIMEOUT': 60 * 24,
+        'DEFAULT_TIMEOUT': 360,
     },
-    'low': {
-        'HOST': 'localhost',
-        'PORT': 6379,
-        'DB': 0,
-    }
 }
 
 
@@ -168,8 +163,8 @@ ADMINS = [('Your name', 'test@twix.com')]
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'burger@jol.com'
-EMAIL_HOST_PASSWORD = 'NENADO'
+EMAIL_HOST_USER = 'bincha.1997@gmail.com'
+EMAIL_HOST_PASSWORD = 'Parolyanikaknet12'
 DEFAULT_FROM_EMAIL = 'Your name'
 DEFAULT_TO_EMAIL = 'test@sneakers.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
