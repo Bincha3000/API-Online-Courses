@@ -22,8 +22,7 @@ class UserCreateView(APIView):
             first_name = user.first_name
             last_name = user.last_name
             email = user.email
-            enqueue(registration_email, first_name, last_name, email)
-            if user:
+            if user and enqueue(registration_email, first_name, last_name, email):
                 token = Token.objects.create(user=user)
                 json = serializer.data
                 json['token'] = token.key
