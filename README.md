@@ -56,6 +56,11 @@ pyhon api_courses/manage.py runserver
 
 #### Managment команды:
 ```
+python manage.py notification_email
+```
+> Запускает планировщик задачь по отправке напоминаний о скором начале занятия
+
+```
 python manage.py generate_courses
 ```
 > Добавляет 5 новых курсов в базу данных в рандомные категории
