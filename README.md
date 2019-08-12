@@ -30,15 +30,20 @@ REST-подход обеспечивает масштабируемость си
 + [Django documentation](https://docs.djangoproject.com/en/2.2/)
 + [Django rest framework](https://www.django-rest-framework.org/)
 + [API](https://ru.wikipedia.org/wiki/API)
++ [Django-RQ](https://github.com/rq/django-rq)
++ [RQ Scheduler](https://github.com/rq/rq-scheduler)
 
 
 ### Requirements:
 + Django==2.2.3
++ djangorestframework==3.9.4
 + django-cors-headers==3.0.2
 + django-debug-toolbar==2.0
-+ djangorestframework==3.9.4
-+ pycodestyle==2.5.0
++ django-rq==2.1.0
++ Faker==2.0.0
++ rq-scheduler==0.9
 + autopep8==1.4.4
+
 
 
 ### Сборка и запуск:
@@ -50,7 +55,14 @@ source venv/bin/activate
 pip install -r requirements.txt
 pyhon api_courses/manage.py runserver
 ```
-
+#### Запуск воркера для очереди:
+```
+python manage.py rqworker default
+```
+#### Запуск планировщика:
+```
+python manage.py rqscheduler
+```
 
 ### Добавленный функционал:
 
