@@ -1,7 +1,8 @@
 Django==2.2.3
+djangorestframework==3.9.4
 django-cors-headers==3.0.2
 django-debug-toolbar==2.0
-djangorestframework==3.9.4
-pycodestyle==2.5.0
+django-rq==2.1.0
+Faker==2.0.0
+rq-scheduler==0.9
 autopep8==1.4.4
-
