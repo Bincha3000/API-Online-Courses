@@ -28,6 +28,7 @@ class Course(models.Model):
     category = models.ForeignKey(Category, verbose_name="Category", related_name="category", on_delete=models.CASCADE)
     short_description = models.CharField(verbose_name="Short description", max_length=250)
     long_description = models.TextField(verbose_name="Long description")
+    icons = models.ImageField(upload_to='', height_field=None, width_field=None, max_length=100)
     price = models.DecimalField(verbose_name="Price", max_digits=8, decimal_places=2)
     date_start = models.DateField(verbose_name="Date start", auto_now=False, auto_now_add=False)
     date_end = models.DateField(verbose_name="Date end", auto_now=False, auto_now_add=False)
