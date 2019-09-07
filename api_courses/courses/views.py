@@ -8,8 +8,13 @@ from rest_framework import status
 
 from courses.tasks import notification_courses_email
 from courses.models import Course, Category, Teacher
-from courses.serializers import CourseSerializer, CategorySerializer, \
-    TeacherSerializer, UserSerializer
+
+from courses.serializers import (
+    CourseSerializer,
+    CategorySerializer,
+    TeacherSerializer,
+    UserSerializer
+)
 
 from datetime import datetime
 from courses.tasks import notification_courses_email
@@ -19,7 +24,6 @@ import django_rq
 class AllCoursesView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
-    # permission_classes = (permissions.AllowAny, )
 
     def get(self, request):
         courses = Course.objects.all()
@@ -30,7 +34,6 @@ class AllCoursesView(APIView):
 class OneCourseView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
-    # permission_classes = (permissions.AllowAny, )
 
     def get(self, request, pk):
         course = get_object_or_404(Course, pk=pk)
@@ -41,7 +44,6 @@ class OneCourseView(APIView):
 class CategoriesView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
-    # permission_classes = (permissions.AllowAny, )
 
     def get(self, request):
         categories = Category.objects.all()
@@ -52,7 +54,6 @@ class CategoriesView(APIView):
 class TeachersView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
-    # permission_classes = (permissions.AllowAny, )
 
     def get(self, request):
         teachers = Teacher.objects.all()
@@ -65,13 +66,14 @@ class ProfileView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
-        profile = User.objects.get(username=request.user)
-        serializer = UserSerializer(profile)
+        user = request.user
+        serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request):
-        profile = User.objects.get(username=request.user)
-        serializer = UserSerializer(profile, data=request.data, partial=True)
+        user = request.user
+        data = request.data
+        serializer = UserSerializer(user, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
