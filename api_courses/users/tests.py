@@ -19,5 +19,5 @@ class AccountTests(APITestCase):
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        # self.assertEqual(Account.objects.count(), 1)
-        # self.assertEqual(Account.objects.get().name, 'DabApps')
+        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(User.objects.get().username, 'Testuser')
