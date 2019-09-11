@@ -4,19 +4,18 @@ python:
   - "3.7"
 
 services:
-
   - mysql
 
 env:
-
   -DJANGO=2.2.3 DB=mysql
-install:
 
+install:
   - pip install -r requirements.txt
 
-before_script:
 
+before_script:
   - mysql -e 'create database test;' -u root
-script:
+
+  script:
   - flake8 ./
-  - python manage.py test
+  - python api_courses/manage.py test
