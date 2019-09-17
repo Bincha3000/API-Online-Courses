@@ -23,10 +23,8 @@ class Command(BaseCommand):
         for i in range(5):
             course = Course.objects.create(
                 title=fake.job(),
-                slug=fake.job().lower(),
                 category_id=random.choice(categories),
-                short_description=fake.text(max_nb_chars=200),
-                long_description=fake.text(max_nb_chars=500),
+                description=fake.text(max_nb_chars=200),
                 price=random.random() * 10000,
                 date_start=fake.date_this_month(before_today=True, after_today=False),
                 date_end=fake.date_this_year(before_today=True, after_today=False),

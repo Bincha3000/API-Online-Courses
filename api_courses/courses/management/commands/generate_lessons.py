@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-
+from django.utils import timezone
 from courses.models import (
     Course,
     Lesson,
@@ -19,11 +19,10 @@ class Command(BaseCommand):
             Lesson.objects.create(
                 title=fake.job(),
                 course_id=fake.random.choice(course),
-                description=fake.text(max_nb_chars=50),
-                date=fake.date_time_this_year(before_now=False, after_now=True, tzinfo=None),
+                description=fake.text(max_nb_chars=50), 
+                date=timezone.now(),
                 duration=90,
                 homework=fake.text(max_nb_chars=50),
-                finished=False,
             )
 
     def handle(self, *args, **kwargs):

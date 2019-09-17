@@ -1,22 +1,26 @@
 import json
-
+from django.test import TestCase
 from rest_framework.authtoken.models import Token
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase, APIRequestFactory, APIClient, force_authenticate
+from rest_framework.test import APIClient
 from django.contrib.auth.models import User
 
 
-class AccountTests(APITestCase):
 
-    @classmethod
-    def setUpTestData(cls):
-
-        cls.signup_url = reverse('users:createuser')
-        cls.login_url = reverse('users:login')
+CREATE_USER_URL = reverse('users:createuser')
+LOGIN_USER_URL = reverse('users:login')
+LOGOUT_USER_URL = reverse('users:logout')
 
 
-        cls.signup_valid_data = {
+class AccountTests(TestCase):
+
+
+    def setUp(self):
+
+        self.client = APIClient()
+
+        self.signup_valid_data = {
             'username': 'Testuser',
             'first_name': 'Testfirst',
             'last_name': 'Testsecond',
@@ -24,7 +28,15 @@ class AccountTests(APITestCase):
             'password': 'qwerty123',
         }
 
-        cls.signup_not_valid_email = {
+        self.signup_password_too_short = {
+            'username': 'Testuser',
+            'first_name': 'Testfirst',
+            'last_name': 'Testsecond',
+            'password': 'qw3',
+            'email': 'testsneakers.com'
+        }
+
+        self.signup_not_valid_email = {
             'username': 'Testuser',
             'first_name': 'Testfirst',
             'last_name': 'Testsecond',
@@ -32,33 +44,55 @@ class AccountTests(APITestCase):
             'email': 'testsneakers.com'
         }
 
-        cls.login_valid_data = {
+        self.login_valid_data = {
             'username': 'Testuser',
             'password': 'qwerty123',
         }
 
-        cls.client = APIClient()
+        self.login_invalid_data = {
+            'username': 'Testuser',
+            'password': 'qwerty321',
+        }
 
-    def test_create_account(self):
-        """Make sure we can create a new account object."""
-        response = self.client.post(self.signup_url, self.signup_valid_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_create_account_not_valid_email(self):
-        """Make sure that the object is not created if email not valid"""
-        response = self.client.post(self.signup_url, self.signup_not_valid_email, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_user_login(self):
-        """Test that the user can login"""
-        self.client.post(self.signup_url, self.signup_valid_data, format='json')
-        response = self.client.post(self.login_url, self.login_valid_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_create_user_success(self):
+        res = self.client.post(CREATE_USER_URL, self.signup_valid_data)
 
-    def test_user_login_response_token(self):
-        """Check that when login, the user in the response receives a token"""
-        self.client.post(self.signup_url, self.signup_valid_data, format='json')
-        response = self.client.post(self.login_url, self.login_valid_data, format='json')
-        token = Token.objects.get(user__username=self.login_valid_data['username'])
-        self.assertEqual(response.data['token'], token.key)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
+    def test_create_user_not_success(self):
+        res = self.client.post(CREATE_USER_URL, self.signup_not_valid_email)
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_user_short_password(self):
+        res = self.client.post(CREATE_USER_URL, self.signup_password_too_short)
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_token_for_user(self):
+        res = self.client.post(CREATE_USER_URL, self.signup_valid_data)
+        self.assertIn('token', res.data)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+    def test_login_user(self):
+        self.client.post(CREATE_USER_URL, self.signup_valid_data)
+        res = self.client.post(LOGIN_USER_URL, self.login_valid_data)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_login_invalid_data(self):
+        self.client.post(CREATE_USER_URL, self.signup_valid_data)
+        res = self.client.post(LOGIN_USER_URL, self.login_invalid_data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_token_when_user_login(self):
+        self.client.post(CREATE_USER_URL, self.signup_valid_data)
+        res = self.client.post(LOGIN_USER_URL, self.login_valid_data)
+        self.assertIn('token', res.data)
+
+    def test_user_logout(self):
+        user = self.client.post(CREATE_USER_URL, self.signup_valid_data)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + user.data['token'])
+        res = self.client.get(LOGOUT_USER_URL)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
