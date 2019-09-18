@@ -17,5 +17,4 @@ before_script:
   - mysql -e 'create database test;' -u root
 
 script:
-  - flake8 
   - python api_courses/manage.py test
