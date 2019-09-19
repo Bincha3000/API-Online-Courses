@@ -64,4 +64,3 @@ class WalletApiTests(TestCase):
         }
         res = self.client.post(ENROLLMENT_COURSE_URL, context)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
